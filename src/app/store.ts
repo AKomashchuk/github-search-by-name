@@ -5,6 +5,9 @@ export const store = configureStore({
   reducer: {
     reposetories: reposetoriesSlice,
   },
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+    serializableCheck: false,
+  }),
   devTools: process.env.NODE_ENV !== 'production',
 })
 

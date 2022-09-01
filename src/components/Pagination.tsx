@@ -1,35 +1,24 @@
 import * as React from 'react';
 import Pagination from '@mui/material/Pagination';
 import Stack from '@mui/material/Stack';
-import { Data, fetchReposetoriesByName } from '../app/api';
-import { useAppDispatch } from '../app/hooks';
+import { RootState } from '../app/store';
+import { useSelector } from 'react-redux';
 
 type Props = {
-  count: any,
-  query: string,
+  page: number,
+  onSubmit: (event: React.ChangeEvent<unknown>, value?: number) => void,
 }
 
-export default function PaginationComponent({ count, query }: Props) {
-  const [page, setPage] = React.useState(1);
-  const dispatch = useAppDispatch();
-  const countPages = Math.ceil(count / 30) | 1;
-  const params: Data = {
-    name: query,
-    page,
-  }
-
-  const handleChange = async(event: React.ChangeEvent<unknown>, value: number) => {
-    dispatch(fetchReposetoriesByName(params))
-
-    setPage(value);
-  }
+export default function PaginationComponent({ page, onSubmit }: Props) {
+  const count = useSelector((state: RootState) => state.reposetories.totalCount);
+  const countPages = Math.ceil(count / 30) || 1;
 
   return (
-    <Stack spacing={2}>
+    <Stack spacing={2} className='pagination'>
       <Pagination
         count={countPages}
         page={page}
-        onChange={handleChange}
+        onChange={onSubmit}
       />
     </Stack>
   );
