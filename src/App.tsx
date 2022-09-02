@@ -90,7 +90,7 @@ function App() {
       </header>
       <main className='main'>
         {message
-        ? <p className='main__message'>The request limit has been used, please try again in a minute</p>
+        ? <p className='main__message'>{message}</p>
         : (
           <>
             {(reposetories.length !== 0 && totalCount > 1) && (

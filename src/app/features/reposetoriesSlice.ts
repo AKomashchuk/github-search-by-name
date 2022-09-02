@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { Item } from "../../type/item";
+import { Item } from "../../type/Item";
 import { fetchReposetoriesByName } from "../api";
 
 
@@ -13,7 +13,7 @@ type Cache = {
 interface ReposetoriesFromServer {
   items: Item[],
   totalCount: number,
-  status: 'idle' | 'pending' | 'succeeded' | 'reject',
+  status: 'idle' | 'pending' | 'succeeded',
   message: string | undefined,
   cache: {
     [key: string]: Cache,
@@ -60,11 +60,6 @@ export const reposeturiesSlice = createSlice({
     build.addCase(fetchReposetoriesByName.pending, (state) => {
       state.status = 'pending';
       state.message = '';
-    })
-    build.addCase(fetchReposetoriesByName.rejected, (state, action) => {
-      state.status = 'reject';
-      state.message = action.error.message;
-      state.items = [];
     })
   }
 })
