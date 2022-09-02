@@ -14,12 +14,14 @@ export default function PaginationComponent({ page, onSubmit }: Props) {
   const countPages = Math.ceil(count / 30) || 1;
 
   return (
-    <Stack spacing={2} className='pagination'>
-      <Pagination
-        count={countPages}
-        page={page}
-        onChange={onSubmit}
-      />
-    </Stack>
+    <div className="container">
+      <Stack spacing={2} className='pagination'>
+        <Pagination
+          count={countPages}
+          page={page}
+          onChange={onSubmit}
+        />
+      </Stack>
+    </div>
   );
 }

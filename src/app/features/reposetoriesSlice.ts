@@ -25,7 +25,7 @@ const initialState: ReposetoriesFromServer = {
   items: [],
   totalCount: 0,
   status: 'idle',
-  message: '', 
+  message: '',
   cache: {},
   name: '',
 }
@@ -39,34 +39,32 @@ export const reposeturiesSlice = createSlice({
     },
     setCacheItem(state, action) {
       state.items = action.payload.items;
-      state.name = action.payload.name
-      state.totalCount = action.payload.totalCount
+      state.name = action.payload.name;
+      state.totalCount = action.payload.totalCount;
     }
   },
   extraReducers: (build) => {
     build.addCase(fetchReposetoriesByName.fulfilled, (state, action) => {
-      const items = action.payload.items || []
-      const date = action.payload.date || ''
-      const totalCount = action.payload.total_count || 0
+      const { items = [], date = '', total_count: totalCount = 0, message = '', name, page } = action.payload;
 
-      state.items = items
-      state.totalCount = totalCount
-      state.status = 'succeeded'
-      state.message = action.payload.message || ''
-      state.name = action.payload.name
+      state.items = items;
+      state.totalCount = totalCount;
+      state.status = 'succeeded';
+      state.message = message;
+      state.name = name;
       state.cache = {
         ...state.cache,
-        [`${action.payload.name}-${action.payload.page}`]: { items, date, totalCount, name: action.payload.name }
-      }
+        [`${name}-${page}`]: { items, date, totalCount, name }
+      };
     })
     build.addCase(fetchReposetoriesByName.pending, (state) => {
-      state.status = 'pending'
-      state.message = ''
+      state.status = 'pending';
+      state.message = '';
     })
     build.addCase(fetchReposetoriesByName.rejected, (state, action) => {
-      state.status = 'reject'
-      state.message = action.error.message
-      state.items = []
+      state.status = 'reject';
+      state.message = action.error.message;
+      state.items = [];
     })
   }
 })

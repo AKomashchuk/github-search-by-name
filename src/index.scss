@@ -1,0 +1,95 @@
+body {
+  margin: 0;
+  font-family: 'Martel', 'Helvetica Neue',sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+}
+
+.header {
+  &__title {
+    text-align: center;
+    color:cornflowerblue;
+    margin: 0 0 15px;
+  }
+
+  &__form {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+  }
+}
+
+.form {
+  &__input {
+    width: 300px;
+    height: 30px;
+    color: rgb(100, 96, 96);
+    margin-right: 10px;
+    padding-left: 10px;
+    outline-color:grey;
+
+
+    &::placeholder {
+      color: gray;
+      line-height: 27px;
+    }
+
+    &:focus,
+    &:hover {
+      outline-color:cornflowerblue;
+    }
+  }
+
+  &__button {
+    padding: 0 15px;
+    background-color: cornflowerblue;
+    border: 1px solid cornflowerblue;
+    color: white;
+    border-radius: 2px;
+    
+    &:hover {
+      background-color: rgb(78, 128, 219);
+    }
+  }
+}
+
+.main {
+  &__loading {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+  }
+
+  &__message {
+    text-align: center;
+  }
+
+  &__list {
+    margin: 10px 20px;
+  }
+
+  &__item {
+   padding: 0 10px;
+   width: max-content;
+   border: 1px solid transparent;
+   
+   &:hover {
+     border: 1px solid cornflowerblue;
+     cursor: pointer;
+    }
+  }
+}
+
+ol li::marker:hover {
+  border: 1px solid black;
+  border-radius: 50%;
+  color: red;
+}
+
+.container {
+  display: flex;
+  justify-content: end;
+  position: sticky;
+  bottom: 5px;
+}

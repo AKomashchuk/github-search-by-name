@@ -1,14 +1,13 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { useSelector } from 'react-redux';
-import './App.css';
 import { fetchReposetoriesByName } from './app/api';
 import { useAppDispatch } from './app/hooks';
 import { AppDispatch, RootState } from './app/store';
+import { deleteCacheItem, setCacheItem } from './app/features/reposetoriesSlice';
 import PaginationComponent from './components/Pagination';
-import Input from '@mui/material/Input';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
-import { deleteCacheItem, setCacheItem } from './app/features/reposetoriesSlice';
+import '../src/index.scss';
 
 function App() {
   const ref = useRef<any>();
@@ -19,6 +18,7 @@ function App() {
     status,
     message,
     name,
+    totalCount,
   } = useSelector((state: RootState) => state.reposetories);
   const [query, setQuery] = useState('');
   const [page, setPage] = useState(1);
@@ -44,16 +44,14 @@ function App() {
     if (status === 'pending') {
       ref.current.abort();
     }
-  }, [status])
+  }, [status]);
 
   const onSubmit = useCallback((event: React.ChangeEvent<unknown>, value?: number) => {
     event.preventDefault();
     abortRequest();
     setPaginationPage(value);
-    
+
     const { items, cachedTime, key, totalCount, cachedName } = getDataForCache(value || page);
-    console.log(' items, cachedTime, key', items, cachedTime, key);
-    
 
     if (items) {
       if (cachedTime && cachedTime >= 5) {
@@ -80,7 +78,7 @@ function App() {
       <header className='header'>
         <h1 className='header__title'>Serch reposetories by name</h1>
         <form className='header__form form' onSubmit={onSubmit}>
-          <Input
+          <input
             className='form__input'
             type="text"
             placeholder='Search'
@@ -91,22 +89,30 @@ function App() {
         </form>
       </header>
       <main className='main'>
-        {status === 'pending' 
-          ?  (<Box sx={{ display: 'flex' }}>
-              <CircularProgress />
-            </Box>)
-          : (
-            <>
-              <ol start={(page - 1) * 30 + 1} className='main__list'>
-                {reposetories.map(rep => (
-                  <li className='main__item' key={rep.id}>{rep.name}</li>
-                ))}
-              </ol>
-              {reposetories.length !== 0 && (
-                <PaginationComponent page={page} onSubmit={onSubmit} />
-              )}
-            </>
-          )}
+        {message
+        ? <p className='main__message'>The request limit has been used, please try again in a minute</p>
+        : (
+          <>
+            {(reposetories.length !== 0 && totalCount > 1) && (
+              <PaginationComponent page={page} onSubmit={onSubmit} />
+            )}
+
+            {status === 'pending'
+            ?  (<Box sx={{ display: 'flex' }} className='main__loading'>
+                  <CircularProgress />
+                </Box>)
+            : (
+              <>
+                <ol start={(page - 1) * 30 + 1} className='main__list'>
+                  {reposetories.map(rep => (
+                    <li className='main__item' key={rep.id}>{rep.name}</li>
+                  ))}
+                </ol>
+              </>
+            )}
+          </>
+        )
+        } 
       </main>
     </>
   );
